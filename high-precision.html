@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>High Precision Car Wash Hygiene & Cleaning Specialist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Outfit', 'sans-serif'],
+                        body: ['DM Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa', 100: '#ccfbf1', 200: '#99f6e4',
+                            300: '#5eead4', 400: '#2dd4bf', 500: '#14b8a6',
+                            600: '#0d9488', 700: '#0f766e', 800: '#115e59', 900: '#134e4a'
+                        },
+                        ink: { DEFAULT: '#0c1a17', soft: '#1a2e28', muted: '#2d4a42' }
+                    },
+                    screens: {
+                        'xs': '375px',
+                        'sm': '640px',
+                        'md': '768px',
+                        'lg': '1024px',
+                        'xl': '1280px',
+                        '2xl': '1536px'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html { overflow-x: hidden; }
+        body { font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Outfit', sans-serif; }
+
+        /* ── PAGE SECTIONS ── */
+        .page-section { display: none; opacity: 0; }
+        .page-section.active {
+            display: block;
+            animation: pageIn 0.45s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── SCROLL REVEAL ── */
+        .reveal, .reveal-left, .reveal-right, .reveal-scale {
+            opacity: 0;
+            transition: opacity 0.75s cubic-bezier(0.4,0,0.2,1),
+                        transform 0.75s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal         { transform: translateY(36px); }
+        .reveal-left    { transform: translateX(-48px); }
+        .reveal-right   { transform: translateX(48px); }
+        .reveal-scale   { transform: scale(0.92); }
+        .reveal.active,
+        .reveal-left.active,
+        .reveal-right.active,
+        .reveal-scale.active {
+            opacity: 1;
+            transform: none;
+        }
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+        .delay-400 { transition-delay: 400ms; }
+
+        /* ── FLOATING IMAGES ── */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+        }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-float-slow { animation: float 8s ease-in-out infinite 2s; }
+
+        /* ── NAV ── */
+        .glass-nav {
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute; bottom: -2px; left: 0;
+            width: 0; height: 2px;
+            background: #0d9488;
+            transition: width 0.25s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+        .nav-link.active { color: #0d9488; font-weight: 600; }
+
+        /* ── MOBILE MENU ── */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        #mobile-menu.open { max-height: 400px; }
+
+        /* ── HERO GRADIENT ── */
+        .hero-gradient {
+            background: linear-gradient(135deg, #0c1a17 0%, #134e4a 50%, #0f766e 100%);
+        }
+
+        /* ── CARD HOVER ── */
+        .card-hover {
+            transition: transform 0.3s cubic-bezier(0.4,0,0.2,1),
+                        box-shadow 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px -10px rgba(13,148,136,0.2);
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f4; }
+        ::-webkit-scrollbar-thumb { background: #0d9488; border-radius: 3px; }
+
+        /* ── SAFE AREA (notched phones) ── */
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+
+        /* ── SERVICE ITEM ── */
+        .service-item {
+            transition: background 0.2s ease, padding-left 0.2s ease;
+        }
+        .service-item:hover { padding-left: 1rem; }
+
+        /* ── FLOATING BTNS ── */
+        .fab {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .fab:hover { transform: scale(1.1); }
+        .fab:active { transform: scale(0.95); }
+
+        /* ── TOUCH: remove hover-only effects on touch ── */
+        @media (hover: none) {
+            .card-hover:hover { transform: none; box-shadow: none; }
+            .fab:hover { transform: none; }
+            .service-item:hover { padding-left: 0; }
+        }
+
+        /* ── RESPONSIVE HERO IMAGE HEIGHTS ── */
+        .hero-img-top { height: clamp(180px, 30vw, 320px); }
+        .hero-img-bot { height: clamp(140px, 22vw, 250px); }
+
+        /* ── MAP ── */
+        .map-frame { height: clamp(200px, 30vw, 360px); }
+
+        /* ── SECTION HEADER BG ── */
+        .page-header {
+            background: linear-gradient(135deg, #134e4a 0%, #0f766e 100%);
+            padding: clamp(3rem, 6vw, 5rem) 0;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased flex flex-col min-h-screen">
+
+<!-- ════════════════ NAVIGATION ════════════════ -->
+<nav class="fixed w-full z-50 glass-nav shadow-sm" id="main-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16 sm:h-20">
+
+            <!-- Logo -->
+            <button onclick="navigate('#home')" class="flex items-center gap-2 sm:gap-3 flex-shrink-0 focus:outline-none" aria-label="Home">
+                <div class="w-9 h-9 sm:w-11 sm:h-11 bg-teal-700 rounded-xl flex items-center justify-center text-white font-black text-base sm:text-lg shadow-md hover:rotate-6 transition-transform duration-300 select-none">
+                    HP
+                </div>
+                <div class="leading-tight">
+                    <div class="font-black text-sm sm:text-base md:text-lg tracking-tight text-ink">HIGH PRECISION</div>
+                    <div class="text-[9px] sm:text-[10px] text-slate-400 font-semibold uppercase tracking-widest">Hygiene &amp; Cleaning</div>
+                </div>
+            </button>
+
+            <!-- Desktop links -->
+            <div class="hidden md:flex items-center gap-7 lg:gap-10">
+                <a href="#home"     class="nav-link text-slate-600 hover:text-teal-700 text-sm font-medium transition-colors">Home</a>
+                <a href="#about"    class="nav-link text-slate-600 hover:text-teal-700 text-sm font-medium transition-colors">About Us</a>
+                <a href="#services" class="nav-link text-slate-600 hover:text-teal-700 text-sm font-medium transition-colors">Services</a>
+                <a href="#contact"  class="ml-2 px-5 py-2.5 bg-ink text-white rounded-full text-sm font-semibold hover:bg-teal-700 hover:scale-105 transition-all shadow">Contact Us</a>
+            </div>
+
+            <!-- Mobile burger -->
+            <button id="burger-btn" class="md:hidden p-2 rounded-lg text-slate-600 hover:text-teal-700 hover:bg-slate-100 transition-colors focus:outline-none" aria-label="Toggle menu" aria-expanded="false">
+                <i class="ph ph-list text-2xl" id="burger-icon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile panel -->
+    <div id="mobile-menu" class="md:hidden bg-white border-t border-slate-100 shadow-xl">
+        <div class="px-4 py-4 space-y-1">
+            <a href="#home"     class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:text-teal-700 hover:bg-teal-50 font-medium transition-colors text-sm"><i class="ph ph-house text-lg"></i> Home</a>
+            <a href="#about"    class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:text-teal-700 hover:bg-teal-50 font-medium transition-colors text-sm"><i class="ph ph-info text-lg"></i> About Us</a>
+            <a href="#services" class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:text-teal-700 hover:bg-teal-50 font-medium transition-colors text-sm"><i class="ph ph-squares-four text-lg"></i> Services</a>
+            <a href="#contact"  class="flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-teal-600 text-white font-semibold text-sm mt-2 hover:bg-teal-700 transition-colors"><i class="ph ph-envelope text-lg"></i> Contact Us</a>
+        </div>
+    </div>
+</nav>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<main class="flex-grow pt-16 sm:pt-20">
+
+<!-- ══════════ HOME ══════════ -->
+<section id="home" class="page-section active">
+
+    <!-- Hero -->
+    <div class="hero-gradient relative overflow-hidden">
+        <!-- BG image overlay -->
+        <div class="absolute inset-0">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1920&q=75"
+                 onerror="this.style.display='none'"
+                 alt="" class="w-full h-full object-cover opacity-15 mix-blend-overlay" loading="eager">
+            <div class="absolute inset-0 bg-gradient-to-br from-ink/90 via-ink/70 to-teal-900/50"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
+                    py-14 sm:py-20 lg:py-28 xl:py-36
+                    grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+
+            <!-- Text -->
+            <div class="reveal-left">
+                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/20 text-teal-300 text-xs font-bold tracking-wider uppercase mb-5 border border-teal-500/30">
+                    <span class="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse"></span>
+                    100% Black-Owned Specialist Company
+                </span>
+
+                <h1 class="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight leading-[1.05] mb-5">
+                    Excellence in<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-teal-500">
+                        Hygiene &amp; Cleaning
+                    </span>
+                </h1>
+
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 max-w-lg font-light">
+                    Providing professional work and quality services to the Limpopo Province. We fulfill our clients' needs without compromising our integrity and high standards.
+                </p>
+
+                <div class="flex flex-col xs:flex-row gap-3 xs:gap-4">
+                    <a href="#services"
+                       class="group flex items-center justify-center gap-2 px-7 py-3.5 bg-teal-500 hover:bg-teal-400 text-white rounded-full font-semibold text-sm sm:text-base transition-all shadow-lg hover:shadow-teal-500/40 hover:-translate-y-0.5 active:translate-y-0">
+                        Explore Services
+                        <i class="ph ph-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                    <a href="#contact"
+                       class="flex items-center justify-center px-7 py-3.5 bg-white/10 hover:bg-white/20 text-white border border-white/25 rounded-full font-semibold text-sm sm:text-base transition-all backdrop-blur hover:-translate-y-0.5 active:translate-y-0">
+                        Request a Quote
+                    </a>
+                </div>
+            </div>
+
+            <!-- Floating images — hidden on small, shown md+ -->
+            <div class="hidden lg:block relative h-[420px] xl:h-[500px] reveal-right delay-200">
+                <img src="https://images.unsplash.com/photo-1628177142898-93e46e48dc58?auto=format&fit=crop&w=700&q=75"
+                     onerror="this.style.display='none'"
+                     alt="Office Cleaning"
+                     class="absolute right-0 top-0 w-[72%] hero-img-top object-cover rounded-2xl xl:rounded-3xl shadow-2xl border-4 border-ink/60 z-10 animate-float">
+                <img src="https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=700&q=75"
+                     onerror="this.style.display='none'"
+                     alt="Deep Cleaning"
+                     class="absolute left-0 bottom-0 w-[60%] hero-img-bot object-cover rounded-2xl xl:rounded-3xl shadow-2xl border-4 border-ink/60 z-20 animate-float-slow">
+                <div class="absolute inset-0 bg-teal-500 blur-3xl opacity-10 -z-10 rounded-full scale-75"></div>
+            </div>
+        </div>
+
+        <!-- Wave divider -->
+        <div class="absolute bottom-0 left-0 right-0">
+            <svg viewBox="0 0 1440 50" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full" preserveAspectRatio="none">
+                <path d="M0 50L1440 50L1440 20C1200 50 960 0 720 20C480 40 240 0 0 20L0 50Z" fill="#f8fafc"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Value cards -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 sm:pb-16 lg:pb-20">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+
+            <div class="bg-white p-6 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl shadow-lg border border-slate-100 flex flex-col items-center text-center card-hover reveal delay-100">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 bg-teal-50 rounded-xl flex items-center justify-center mb-4 text-teal-600 shadow-inner">
+                    <i class="ph ph-shield-check text-2xl sm:text-3xl"></i>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-ink mb-2">Integrity &amp; Honesty</h3>
+                <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">We conduct all business professionally and transparently, ensuring excellent service delivery.</p>
+            </div>
+
+            <div class="bg-white p-6 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl shadow-lg border border-slate-100 flex flex-col items-center text-center card-hover reveal delay-200">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 bg-teal-50 rounded-xl flex items-center justify-center mb-4 text-teal-600 shadow-inner">
+                    <i class="ph ph-handshake text-2xl sm:text-3xl"></i>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-ink mb-2">Long-term Relationships</h3>
+                <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">Dedicated to building lasting partnerships with proficient support and individualized attention.</p>
+            </div>
+
+            <div class="bg-white p-6 sm:p-7 lg:p-8 rounded-2xl sm:rounded-3xl shadow-lg border border-slate-100 flex flex-col items-center text-center card-hover reveal delay-300 sm:col-span-1">
+                <div class="w-12 h-12 sm:w-14 sm:h-14 bg-teal-50 rounded-xl flex items-center justify-center mb-4 text-teal-600 shadow-inner">
+                    <i class="ph ph-leaf text-2xl sm:text-3xl"></i>
+                </div>
+                <h3 class="text-base sm:text-lg font-bold text-ink mb-2">Quality &amp; Value</h3>
+                <p class="text-slate-500 text-xs sm:text-sm leading-relaxed">All products and services are warranted to be of the highest value and sustainability.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 lg:pb-24">
+        <h2 class="text-2xl sm:text-3xl font-black text-center text-ink mb-8 reveal">Our Work Environments</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 reveal-scale delay-100">
+            <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=75"
+                 onerror="this.style.display='none'" loading="lazy"
+                 class="w-full h-28 xs:h-36 sm:h-48 md:h-56 lg:h-64 object-cover rounded-xl sm:rounded-2xl hover:scale-105 transition-transform duration-500 shadow-md" alt="Team Working">
+            <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=600&q=75"
+                 onerror="this.style.display='none'" loading="lazy"
+                 class="w-full h-28 xs:h-36 sm:h-48 md:h-56 lg:h-64 object-cover rounded-xl sm:rounded-2xl hover:scale-105 transition-transform duration-500 shadow-md" alt="Industrial Cleaning">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=600&q=75"
+                 onerror="this.style.display='none'" loading="lazy"
+                 class="w-full h-28 xs:h-36 sm:h-48 md:h-56 lg:h-64 object-cover rounded-xl sm:rounded-2xl hover:scale-105 transition-transform duration-500 shadow-md" alt="Hygiene">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=75"
+                 onerror="this.style.display='none'" loading="lazy"
+                 class="w-full h-28 xs:h-36 sm:h-48 md:h-56 lg:h-64 object-cover rounded-xl sm:rounded-2xl hover:scale-105 transition-transform duration-500 shadow-md" alt="Corporate Environment">
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ ABOUT ══════════ -->
+<section id="about" class="page-section">
+
+    <div class="page-header relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-3">Company Profile</h1>
+            <p class="text-teal-200 text-base sm:text-lg max-w-2xl mx-auto font-light">Our history, mission, and the core values that drive High Precision.</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+
+        <!-- Overview grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center mb-14 lg:mb-20">
+
+            <div class="reveal-left order-2 lg:order-1">
+                <span class="text-teal-600 font-bold uppercase tracking-widest text-xs mb-2 block">Our Story</span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-black text-ink mb-5">Overview</h2>
+                <p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-4">
+                    High Precision Car Wash Hygiene and Cleaning Specialist (Pty) Ltd is a 100% black-owned company formed and registered with CIPC in 2017. Our aim is offering a wide range of high-quality products and services to our clients.
+                </p>
+                <p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-8">
+                    We were established to provide professional work and quality services, focusing on fulfilling our clients' needs without compromising our integrity and high standards.
+                </p>
+
+                <h3 class="text-base sm:text-lg font-bold text-ink mb-4">Our Core Values</h3>
+                <div class="flex flex-wrap gap-2 sm:gap-2.5">
+                    <span class="px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-xs sm:text-sm font-semibold text-teal-700 hover:bg-teal-600 hover:text-white transition-colors cursor-default">Integrity</span>
+                    <span class="px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-xs sm:text-sm font-semibold text-teal-700 hover:bg-teal-600 hover:text-white transition-colors cursor-default">Professionalism</span>
+                    <span class="px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-xs sm:text-sm font-semibold text-teal-700 hover:bg-teal-600 hover:text-white transition-colors cursor-default">Honesty</span>
+                    <span class="px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-xs sm:text-sm font-semibold text-teal-700 hover:bg-teal-600 hover:text-white transition-colors cursor-default">Transparency</span>
+                    <span class="px-4 py-2 bg-teal-50 border border-teal-100 rounded-xl text-xs sm:text-sm font-semibold text-teal-700 hover:bg-teal-600 hover:text-white transition-colors cursor-default">Responsibility</span>
+                </div>
+            </div>
+
+            <div class="relative reveal-right order-1 lg:order-2">
+                <div class="absolute inset-0 bg-teal-500 rounded-2xl sm:rounded-3xl translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4 -z-10 opacity-70"></div>
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=75"
+                     onerror="this.style.display='none'" loading="lazy"
+                     alt="Professional Team"
+                     class="rounded-2xl sm:rounded-3xl shadow-xl border-4 border-white object-cover w-full"
+                     style="height: clamp(220px, 35vw, 480px);">
+                <div class="absolute -bottom-4 -left-3 sm:-bottom-5 sm:-left-5 bg-white p-4 sm:p-5 rounded-xl sm:rounded-2xl shadow-xl z-20 border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <i class="ph-fill ph-check-circle text-teal-500 text-3xl sm:text-4xl"></i>
+                        <div>
+                            <p class="font-bold text-ink text-sm">CIPC Registered</p>
+                            <p class="text-xs text-slate-400">Since 2017</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Objectives -->
+        <div class="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 shadow-xl border border-slate-100 mb-10 lg:mb-14 reveal-scale delay-100">
+            <h3 class="text-xl sm:text-2xl font-black text-ink mb-5 flex items-center gap-3 border-b border-slate-100 pb-4">
+                <i class="ph-fill ph-crosshair text-teal-500 text-2xl sm:text-3xl"></i> Company Objectives
+            </h3>
+            <ul class="space-y-3 sm:space-y-4">
+                <li class="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                    <i class="ph-bold ph-check-circle text-teal-500 text-lg sm:text-xl mt-0.5 flex-shrink-0"></i>
+                    <span class="text-slate-600 text-sm sm:text-base lg:text-lg font-medium leading-relaxed">Deliver services that are of high quality and conduct all business professionally.</span>
+                </li>
+                <li class="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                    <i class="ph-bold ph-check-circle text-teal-500 text-lg sm:text-xl mt-0.5 flex-shrink-0"></i>
+                    <span class="text-slate-600 text-sm sm:text-base lg:text-lg font-medium leading-relaxed">Ensure client loyalty by building long-term relationships.</span>
+                </li>
+                <li class="flex items-start gap-3 p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                    <i class="ph-bold ph-check-circle text-teal-500 text-lg sm:text-xl mt-0.5 flex-shrink-0"></i>
+                    <span class="text-slate-600 text-sm sm:text-base lg:text-lg font-medium leading-relaxed">Ensure that all products offered are warranted to be of value and sustainability.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Mission & Vision -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+
+            <div class="group relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl reveal delay-100" style="min-height: 280px;">
+                <img src="https://images.unsplash.com/photo-1628177142898-93e46e48dc58?auto=format&fit=crop&w=800&q=65"
+                     onerror="this.style.display='none'" loading="lazy"
+                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="">
+                <div class="absolute inset-0 bg-teal-900/85 group-hover:bg-teal-900/90 transition-colors"></div>
+                <div class="relative p-7 sm:p-10 lg:p-12 text-white h-full flex flex-col justify-center">
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-black mb-4 flex items-center gap-3">
+                        <i class="ph-fill ph-flag text-teal-300 text-2xl sm:text-3xl flex-shrink-0"></i> Our Mission
+                    </h3>
+                    <p class="text-slate-200 leading-relaxed mb-3 text-sm sm:text-base">Becoming a leading company in the Limpopo Province and neighboring provinces. We achieve sustainability through customer satisfaction and distinguishing ourselves through reliable service.</p>
+                    <p class="text-slate-200 leading-relaxed text-sm sm:text-base">Dedicated to building long-term relationships by providing quality services and proficient customer support.</p>
+                </div>
+            </div>
+
+            <div class="group relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl reveal delay-300" style="min-height: 280px;">
+                <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=65"
+                     onerror="this.style.display='none'" loading="lazy"
+                     class="absolute inset-0 w-full h-full object-cover scale-110 blur-sm group-hover:scale-125 transition-transform duration-700" alt="">
+                <div class="absolute inset-0 bg-white/90 group-hover:bg-white/85 transition-colors"></div>
+                <div class="relative p-7 sm:p-10 lg:p-12 text-ink h-full flex flex-col justify-center">
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-black mb-4 flex items-center gap-3">
+                        <i class="ph-fill ph-lightbulb text-teal-500 text-2xl sm:text-3xl flex-shrink-0"></i> Our Vision
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed mb-3 text-sm sm:text-base">We believe in progress, growth, and possibility. We want to help all our customers make their lives and businesses better with products and services that are tailored to their needs.</p>
+                    <p class="text-slate-600 leading-relaxed text-sm sm:text-base">Through long-term partnerships, creative marketing, and cost efficiency, we pursue profitable growth while ensuring our communities develop.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ SERVICES ══════════ -->
+<section id="services" class="page-section">
+
+    <div class="page-header relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-3">Our Services</h1>
+            <p class="text-teal-200 text-base sm:text-lg max-w-2xl mx-auto font-light">Professional cleaning and hygiene services tailored to your specific environment.</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-14">
+
+            <!-- Cleaning Services -->
+            <div class="bg-white rounded-2xl sm:rounded-3xl shadow-xl border border-slate-100 overflow-hidden reveal-left group">
+                <div class="relative overflow-hidden" style="height: clamp(160px, 22vw, 240px);">
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=800&q=70"
+                         onerror="this.style.display='none'" loading="lazy"
+                         alt="Cleaning Services"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent flex items-end p-5 sm:p-7">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white flex items-center gap-2">
+                                <i class="ph-fill ph-broom text-teal-300 flex-shrink-0"></i> Cleaning Services
+                            </h2>
+                            <p class="text-slate-300 text-xs sm:text-sm font-medium mt-0.5">Commercial &amp; Residential</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5 sm:p-7 lg:p-9">
+                    <ul class="space-y-2 sm:space-y-3">
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Daily Household Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Daily Office Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Industrial Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Windows &amp; High Rise Beam Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Move In / Out Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Mattress Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Carpet Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Upholstery Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-slate-50 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-100 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-check text-teal-600 text-xs"></i></div>
+                            <span class="text-slate-700 font-medium text-sm sm:text-base">Car Fleet Washing</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Hygiene Services -->
+            <div class="bg-ink rounded-2xl sm:rounded-3xl shadow-xl overflow-hidden reveal-right group">
+                <div class="relative overflow-hidden" style="height: clamp(160px, 22vw, 240px);">
+                    <img src="https://images.unsplash.com/photo-1584362917165-526a968579e8?auto=format&fit=crop&w=800&q=70"
+                         onerror="this.style.display='none'" loading="lazy"
+                         alt="Hygiene Services"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/50 to-transparent flex items-end p-5 sm:p-7">
+                        <div>
+                            <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-white flex items-center gap-2">
+                                <i class="ph-fill ph-sparkle text-teal-300 flex-shrink-0"></i> Hygiene Cleaning
+                            </h2>
+                            <p class="text-slate-400 text-xs sm:text-sm font-medium mt-0.5">Specialized Sanitation</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-5 sm:p-7 lg:p-9">
+                    <ul class="space-y-2 sm:space-y-3">
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-900 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-shield-check text-teal-300 text-xs"></i></div>
+                            <span class="text-slate-200 font-medium text-sm sm:text-base">Deep Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-900 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-shield-check text-teal-300 text-xs"></i></div>
+                            <span class="text-slate-200 font-medium text-sm sm:text-base">Disinfection Cleaning</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-900 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-shield-check text-teal-300 text-xs"></i></div>
+                            <span class="text-slate-200 font-medium text-sm sm:text-base">Fumigation Services</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-900 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-shield-check text-teal-300 text-xs"></i></div>
+                            <span class="text-slate-200 font-medium text-sm sm:text-base">Pest Control</span>
+                        </li>
+                        <li class="service-item flex items-center gap-3 p-2 hover:bg-white/5 rounded-lg transition-all">
+                            <div class="w-6 h-6 bg-teal-900 rounded-full flex items-center justify-center flex-shrink-0"><i class="ph-bold ph-shield-check text-teal-300 text-xs"></i></div>
+                            <span class="text-slate-200 font-medium text-sm sm:text-base">Kitchen Hygiene Cleaning</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Who We Serve -->
+        <div class="mt-14 sm:mt-20 text-center reveal-scale delay-100">
+            <p class="text-xs font-bold tracking-widest text-teal-500 uppercase mb-6">Who We Serve</p>
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+                <div class="px-4 sm:px-5 py-3 bg-white border border-slate-200 shadow-md rounded-xl text-slate-700 font-bold flex items-center gap-2 hover:-translate-y-1 transition-transform text-sm sm:text-base cursor-default">
+                    <i class="ph-fill ph-buildings text-teal-500 text-lg sm:text-xl flex-shrink-0"></i> Government Tenders
+                </div>
+                <div class="px-4 sm:px-5 py-3 bg-white border border-slate-200 shadow-md rounded-xl text-slate-700 font-bold flex items-center gap-2 hover:-translate-y-1 transition-transform text-sm sm:text-base cursor-default">
+                    <i class="ph-fill ph-briefcase text-teal-500 text-lg sm:text-xl flex-shrink-0"></i> Private Companies
+                </div>
+                <div class="px-4 sm:px-5 py-3 bg-white border border-slate-200 shadow-md rounded-xl text-slate-700 font-bold flex items-center gap-2 hover:-translate-y-1 transition-transform text-sm sm:text-base cursor-default">
+                    <i class="ph-fill ph-user text-teal-500 text-lg sm:text-xl flex-shrink-0"></i> Private Individuals
+                </div>
+                <div class="px-4 sm:px-5 py-3 bg-white border border-slate-200 shadow-md rounded-xl text-slate-700 font-bold flex items-center gap-2 hover:-translate-y-1 transition-transform text-sm sm:text-base cursor-default">
+                    <i class="ph-fill ph-graduation-cap text-teal-500 text-lg sm:text-xl flex-shrink-0"></i> Schools
+                </div>
+                <div class="px-4 sm:px-5 py-3 bg-white border border-slate-200 shadow-md rounded-xl text-slate-700 font-bold flex items-center gap-2 hover:-translate-y-1 transition-transform text-sm sm:text-base cursor-default">
+                    <i class="ph-fill ph-hands-clapping text-teal-500 text-lg sm:text-xl flex-shrink-0"></i> Non-Profit Orgs
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════ CONTACT ══════════ -->
+<section id="contact" class="page-section">
+
+    <div class="page-header relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 mix-blend-overlay bg-[url('https://images.unsplash.com/photo-1628177142898-93e46e48dc58?auto=format&fit=crop&w=1920&q=60')] bg-cover bg-center"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tight mb-3">Contact Details</h1>
+            <p class="text-teal-200 text-base sm:text-lg max-w-2xl mx-auto font-light">Get in touch to discuss your cleaning and hygiene requirements.</p>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
+
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-slate-100 overflow-hidden reveal-scale">
+            <div class="grid grid-cols-1 lg:grid-cols-5">
+
+                <!-- Left: contact info panel -->
+                <div class="lg:col-span-2 relative text-white overflow-hidden" style="min-height: 320px;">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=65"
+                         onerror="this.style.display='none'" loading="lazy"
+                         class="absolute inset-0 w-full h-full object-cover" alt="">
+                    <div class="absolute inset-0 bg-teal-900/90"></div>
+
+                    <div class="relative z-10 p-6 sm:p-10 lg:p-12">
+                        <h2 class="text-2xl sm:text-3xl font-black text-white mb-8">Reach Out</h2>
+                        <div class="space-y-6 sm:space-y-8">
+
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-teal-500/25 border border-teal-500/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-user text-lg sm:text-xl text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-teal-300 text-xs font-bold uppercase tracking-wider mb-1">Director</p>
+                                    <p class="text-white font-medium text-base sm:text-lg">Seabi Hope Malatji</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-teal-500/25 border border-teal-500/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-phone text-lg sm:text-xl text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-teal-300 text-xs font-bold uppercase tracking-wider mb-1">Phone</p>
+                                    <a href="tel:0727782773" class="text-white font-medium text-base sm:text-lg hover:text-teal-300 transition-colors">072 778 2773</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-teal-500/25 border border-teal-500/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-envelope-simple text-lg sm:text-xl text-white"></i>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="text-teal-300 text-xs font-bold uppercase tracking-wider mb-1">Email</p>
+                                    <a href="mailto:hopeseabe@gmail.com" class="text-white font-medium text-sm sm:text-base hover:text-teal-300 transition-colors break-all">hopeseabe@gmail.com</a>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-4 group">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-teal-500/25 border border-teal-500/40 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                    <i class="ph-fill ph-map-pin text-lg sm:text-xl text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="text-teal-300 text-xs font-bold uppercase tracking-wider mb-1">Address</p>
+                                    <p class="text-white font-medium text-sm sm:text-base leading-relaxed">
+                                        No 6 Thabo Mbeki Street<br>Polokwane, Limpopo<br>0700
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: registration details -->
+                <div class="lg:col-span-3 p-6 sm:p-10 lg:p-12 bg-white flex flex-col justify-center">
+                    <h2 class="text-xl sm:text-2xl lg:text-3xl font-black text-ink mb-6 border-b border-slate-100 pb-5">Company Registration Details</h2>
+
+                    <div class="grid grid-cols-1 xs:grid-cols-2 gap-4 sm:gap-5 mb-8">
+                        <div class="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-100">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1.5">Registered Name</p>
+                            <p class="text-slate-800 font-semibold text-xs sm:text-sm leading-relaxed">High Precision Car Wash Hygiene and Cleaning Specialist (Pty) Ltd</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-100">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1.5">Registration Number</p>
+                            <p class="text-slate-800 font-semibold text-sm sm:text-base">2019/032757/07</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-100">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1.5">VAT Number</p>
+                            <p class="text-slate-800 font-semibold text-sm sm:text-base">N/A</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-100">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1.5">Operating Region</p>
+                            <p class="text-slate-800 font-semibold text-sm sm:text-base">Limpopo Province &amp; Neighbors</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-2xl p-6 sm:p-8 border border-teal-200 relative overflow-hidden">
+                        <i class="ph-fill ph-quotes text-6xl text-teal-200 absolute -top-2 -left-2 rotate-180 select-none"></i>
+                        <h3 class="text-base sm:text-lg font-black text-teal-900 mb-3 relative z-10">Customer Benefits</h3>
+                        <p class="text-teal-800 text-sm sm:text-base leading-relaxed font-medium relative z-10">
+                            We conduct our business in a manner that will be meaningful and satisfactory in order to please our customers. We achieve this by using professionals in our workforce, thus providing our clients with quality and reliable service.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer class="bg-ink text-slate-400 border-t border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16
+                grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-12">
+
+        <div class="sm:col-span-2 lg:col-span-1">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-10 h-10 bg-teal-600 rounded-xl flex items-center justify-center text-white font-black text-base select-none">HP</div>
+                <span class="font-black text-white tracking-tight text-lg">HIGH PRECISION</span>
+            </div>
+            <p class="text-sm leading-relaxed text-slate-400 max-w-xs">A 100% black-owned specialist company delivering professional, high-quality cleaning solutions across Limpopo.</p>
+        </div>
+
+        <div>
+            <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Quick Links</h4>
+            <ul class="space-y-3 text-sm">
+                <li><a href="#home"     class="hover:text-teal-300 transition-colors flex items-center gap-2"><i class="ph-bold ph-caret-right text-teal-600"></i> Home</a></li>
+                <li><a href="#about"    class="hover:text-teal-300 transition-colors flex items-center gap-2"><i class="ph-bold ph-caret-right text-teal-600"></i> About Us</a></li>
+                <li><a href="#services" class="hover:text-teal-300 transition-colors flex items-center gap-2"><i class="ph-bold ph-caret-right text-teal-600"></i> Services</a></li>
+                <li><a href="#contact"  class="hover:text-teal-300 transition-colors flex items-center gap-2"><i class="ph-bold ph-caret-right text-teal-600"></i> Contact</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h4 class="text-white font-bold text-xs uppercase tracking-widest mb-5">Contact Info</h4>
+            <ul class="space-y-3 text-sm">
+                <li class="flex items-start gap-3"><i class="ph-fill ph-user text-teal-500 flex-shrink-0 mt-0.5"></i> Seabi Hope Malatji</li>
+                <li class="flex items-start gap-3"><i class="ph-fill ph-phone text-teal-500 flex-shrink-0 mt-0.5"></i>
+                    <a href="tel:0727782773" class="hover:text-teal-300 transition-colors">072 778 2773</a>
+                </li>
+                <li class="flex items-start gap-3"><i class="ph-fill ph-envelope-simple text-teal-500 flex-shrink-0 mt-0.5"></i>
+                    <a href="mailto:hopeseabe@gmail.com" class="hover:text-teal-300 transition-colors break-all">hopeseabe@gmail.com</a>
+                </li>
+                <li class="flex items-start gap-3"><i class="ph-fill ph-map-pin text-teal-500 flex-shrink-0 mt-0.5"></i>
+                    <span>No 6 Thabo Mbeki Street, Polokwane</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">
+        <div class="map-frame w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+            <iframe
+                width="100%" height="100%"
+                frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                src="https://maps.google.com/maps?q=6%20Thabo%20Mbeki%20Street,%20Polokwane,%20Limpopo,%200700&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                title="High Precision Location Map"
+                loading="lazy"
+                class="opacity-90 hover:opacity-100 transition-opacity duration-300">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="border-t border-white/10 py-5 text-center text-xs text-slate-500 px-4 safe-bottom">
+        &copy; <span id="year"></span> High Precision Car Wash Hygiene and Cleaning Specialist (Pty) Ltd. All rights reserved.
+    </div>
+</footer>
+
+<!-- ════════════════ FLOATING ACTION BUTTONS ════════════════ -->
+<!-- On mobile: bottom-right stack. On md+: right-center column -->
+<div class="fixed z-50
+            bottom-5 right-4
+            md:bottom-auto md:right-5 md:top-1/2 md:-translate-y-1/2
+            flex flex-col gap-3"
+     role="group" aria-label="Quick contact">
+
+    <a href="tel:0727782773"
+       class="fab w-12 h-12 md:w-13 md:h-13 bg-teal-500 hover:bg-teal-600 text-white rounded-full flex items-center justify-center shadow-[0_4px_20px_rgba(20,184,166,0.5)] relative group"
+       aria-label="Call us: 072 778 2773">
+        <i class="ph-fill ph-phone text-xl md:text-2xl"></i>
+        <span class="pointer-events-none absolute right-14 bg-ink text-white text-xs font-semibold px-3 py-1.5 rounded-lg
+                     opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap translate-x-2 group-hover:translate-x-0
+                     hidden md:block shadow-lg">072 778 2773</span>
+    </a>
+
+    <a href="mailto:hopeseabe@gmail.com"
+       class="fab w-12 h-12 md:w-13 md:h-13 bg-white border-2 border-teal-500 text-teal-600 rounded-full flex items-center justify-center shadow-lg relative group"
+       aria-label="Email us: hopeseabe@gmail.com">
+        <i class="ph-fill ph-envelope-simple text-xl md:text-2xl"></i>
+        <span class="pointer-events-none absolute right-14 bg-ink text-white text-xs font-semibold px-3 py-1.5 rounded-lg
+                     opacity-0 group-hover:opacity-100 transition-all duration-200 whitespace-nowrap translate-x-2 group-hover:translate-x-0
+                     hidden md:block shadow-lg">hopeseabe@gmail.com</span>
+    </a>
+</div>
+
+<!-- ════════════════ SCRIPTS ════════════════ -->
+<script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── SCROLL ANIMATIONS ──
+    let revealObserver;
+    function initReveal() {
+        if (revealObserver) revealObserver.disconnect();
+        revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('active');
+                else e.target.classList.remove('active');
+            });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.reveal-scale')
+                .forEach(el => revealObserver.observe(el));
+    }
+
+    // ── ROUTER ──
+    function navigate(hash) {
+        hash = hash || window.location.hash || '#home';
+        if (!document.querySelector(hash)) hash = '#home';
+
+        document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+        document.querySelector(hash).classList.add('active');
+
+        document.querySelectorAll('.nav-link').forEach(l => {
+            l.classList.toggle('active', l.getAttribute('href') === hash);
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        closeMobileMenu();
+        setTimeout(initReveal, 120);
+    }
+
+    window.addEventListener('hashchange', () => navigate());
+    window.addEventListener('load', () => { navigate(); });
+
+    // ── MOBILE MENU ──
+    const burgerBtn  = document.getElementById('burger-btn');
+    const burgerIcon = document.getElementById('burger-icon');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    function closeMobileMenu() {
+        menuOpen = false;
+        mobileMenu.classList.remove('open');
+        burgerIcon.className = 'ph ph-list text-2xl';
+        burgerBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    burgerBtn.addEventListener('click', () => {
+        menuOpen = !menuOpen;
+        mobileMenu.classList.toggle('open', menuOpen);
+        burgerIcon.className = menuOpen ? 'ph ph-x text-2xl' : 'ph ph-list text-2xl';
+        burgerBtn.setAttribute('aria-expanded', String(menuOpen));
+    });
+
+    // Close on outside tap
+    document.addEventListener('click', e => {
+        if (menuOpen && !burgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+            closeMobileMenu();
+        }
+    });
+
+    // ── NAV SHADOW ON SCROLL ──
+    window.addEventListener('scroll', () => {
+        document.getElementById('main-nav').classList.toggle('shadow-md', window.scrollY > 10);
+    }, { passive: true });
+</script>
+</body>
+</html>
